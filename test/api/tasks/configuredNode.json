@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "limit": 20,
+    "next": null,
+    "offset": 0,
+    "previous": null,
+    "total_count": 1
+  },
+  "objects": [
+    {
+      "address": "10.128.0.6",
+      "alternative_fqdn": "",
+      "cloud_bursting": false,
+      "description": "",
+      "domain": "mc.iconf.net",
+      "enable_distributed_database": true,
+      "enable_ssh": "GLOBAL",
+      "gateway": "10.128.0.1",
+      "hostname": "CONFERENCING",
+      "id": 1,
+      "ipv6_address": "",
+      "ipv6_gateway": "",
+      "maintenance_mode": false,
+      "name": "pex302",
+      "netmask": "255.255.255.255",
+      "node_type": "CONFERENCING",
+      "resource_uri": "/api/admin/configuration/v1/worker_vm/1/",
+      "secondary_address": "",
+      "secondary_netmask": "",
+      "snmp_authentication_password": "$~!1sSnvIZs++N8lWJgZGTzMK8kXVqTXjLLy3X0sdhru+4eQ53c8Cgnjape3o37jQphBsD/VgGHy8UQcHgIMAVQc2bedFeTnZtWkoPqSau4oVmL+skT5vOb4x9H/hsUKKWiJM4Pt8dBPE4rrIW4fDh+nladF3y4hTj1j44086l1jZ6PlkWO2FMnJxhdw4N4QFWv3",
+      "snmp_community": "public",
+      "snmp_mode": "DISABLED",
+      "snmp_privacy_password": "$~!1+L4PTIPLDdIshcgK7CFh4cZometIsLZq54IRzA+xcEOvkKLNHbsdBj+QosoEbL4oJIjRt95Z80t9IX3hSSTCh+iSfAEiQnwzi4RPQ7ChTzdtNE2Fu7P/AiZsBKmb+fZmfreoLNyNmX4GuMKj6kife1IwCBv/bLeLA4BNVVl0HHGv2WnBxr+hhJSwF1sDXcPl",
+      "snmp_system_contact": "admin@domain.com",
+      "snmp_system_location": "Virtual machine",
+      "snmp_username": "",
+      "static_nat_address": "35.192.81.100",
+      "static_routes": [],
+      "system_location": "/api/admin/configuration/v1/system_location/13/",
+      "tls_certificate": "/api/admin/configuration/v1/tls_certificate/2/",
+      "transcoding": true
+    }
+  ]
+}

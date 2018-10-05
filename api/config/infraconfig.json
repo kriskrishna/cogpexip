@@ -1,0 +1,18 @@
+[
+  {
+    "system_location": "DMS01",
+    "zones" : [
+      {
+        "name" : "us-central1-a",
+        "count" : 2
+      },
+      {
+        "name" : "us-central1-b",
+        "count" : 1
+      },
+      {
+        "name" : "us-central1-c",
+        "count" : 1
+      }]
+  }
+]

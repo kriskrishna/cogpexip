@@ -1,0 +1,11 @@
+{
+  "credentials" : {
+    "username" : "admin",
+    "password" : "password"
+  },
+  "type" : "rest",
+  "endpoint" : "/v1/admin/something",
+  "payload" : {
+
+  }
+}

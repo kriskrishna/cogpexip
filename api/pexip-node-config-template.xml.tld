@@ -1,0 +1,21 @@
+<ns0:Environment xmlns:ns0="http://schemas.dmtf.org/ovf/environment/1"
+                 ns0:id="pexip-test1.testnode"><ns0:PropertySection>
+    <ns0:Property
+        ns0:key="admin.password"
+        ns0:value="$6$k4rnYY3safibDo1M$
+RLMOR0P6rwa9kbuqRw6bpsWMjZ1vKcq0I9YJM6ANuUJ85RSZGjyhMcnvGQiuCKoc0VDoXRZY
+PYQVlrm2d2Ljj/" /><ns0:Property ns0:key="net.ip2" ns0:value=""
+/><ns0:Property ns0:key="mgmt.fqdn"
+                ns0:value="pexiptest.pexmgr-na01.mc.iconf.net" /><ns0:Property
+        ns0:key="net.ip" ns0:value="35.238.153.40" /><ns0:Property
+        ns0:key="net.gw" ns0:value="35.238.153.254" /><ns0:Property
+        ns0:key="sec.cacert" ns0:value="" /><ns0:Property ns0:key="sec.cert"
+                                                          ns0:value="" /><ns0:Property
+        ns0:key="sec.key" ns0:value="" /><ns0:Property ns0:key="net.mask2" ns0:value=""
+/><ns0:Property ns0:key="net.mask" ns0:value="255.255.255.0"
+/><ns0:Property ns0:key="mgmt.ip" ns0:value="10.128.0.5" /><ns0:Property
+        ns0:key="sec.fips" ns0:value="disabled" /><ns0:Property
+        ns0:key="net.hostname" ns0:value="test1" /><ns0:Property
+        ns0:key="net.domain" ns0:value="testnode" /><ns0:Property
+        ns0:key="net.routes" ns0:value="[]"
+/></ns0:PropertySection></ns0:Environment>
