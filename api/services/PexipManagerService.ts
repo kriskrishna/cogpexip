@@ -1,6 +1,6 @@
 import * as restify from "restify-clients";
 import * as queryString from "querystring";
-import {PexipNodeInfo} from "../models/PexipNodeInfo";
+import {PexipInfo} from "../models/PexipInfo";
 
 /**
  * @description Implements PexipMgr Service using restify client and get the Meeting info.
@@ -32,9 +32,9 @@ export class PexipManagerService {
     /*** Gets the configuration properties from the cloud config server.
      * @param {String} path The path String path for the Request
      */
-    private getNodeConfInfo(path:String, query:any): Promise<Array<PexipNodeInfo>> {
+    private getNodeConfInfo(path:String, query:any): Promise<Array<PexipInfo>> {
 
-        return new Promise<Array<PexipNodeInfo>>((resolve, reject) => {
+        return new Promise<Array<PexipInfo>>((resolve, reject) => {
             let client = restify.createJsonClient({
                 url: this.serviceURL,
                 query: query,
@@ -43,7 +43,7 @@ export class PexipManagerService {
                 }
             });
             client.get(path,
-                (err:Object, _req:Object, _res:Object, obj:Array<PexipNodeInfo>) => {
+                (err:Object, _req:Object, _res:Object, obj:Array<PexipInfo>) => {
                     if (err) {
                         reject(err);
                     } else {
