@@ -1,8 +1,0 @@
-{
-  "resolution": "main",
-  "tree": {
-    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/ee095fa47fcaaac3597ea9dcf453257998d446ea/swagger-hapi/index.d.ts",
-    "raw": "registry:dt/swagger-hapi#0.7.0+20161230173455",
-    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/ee095fa47fcaaac3597ea9dcf453257998d446ea/swagger-hapi/index.d.ts"
-  }
-}

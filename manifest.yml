@@ -1,7 +1,0 @@
----
-applications:
-- name: cf-pexip-callrouter
-  command: node ./artifacts/api/server.js
-  memory: 256M
-  instances: 1
-

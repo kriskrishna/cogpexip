@@ -1,0 +1,302 @@
+{
+	"info": {
+		"_postman_id": "f67f4d7d-a7b7-2bfb-11e8-478006b67efc",
+		"name": "pexip-gcp-config-node",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get-default-location",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1009586e-dcf7-4231-b7f0-6c7d40e6f669",
+						"exec": [
+							"tests[\"Successful GET request\"] = responseCode.code === 200;",
+							"if (pm.response.json().meta.total_count > 0 && pm.response.json().objects[0].name == pm.environment.get(\"pexip_location_name\")){",
+							"  console.log(`deault_locationid: ${pm.response.json().objects[0].name} ${pm.response.json().objects[0].id}`)",
+							"  pm.environment.set(\"default-loc_id\", pm.response.json().objects[0].id)",
+							"}",
+							"else{",
+							"pm.environment.set(\"default-loc_id\", 0)",
+							" console.log(`No default system location found: ${pm.environment.get(\"default-loc_id\")}`)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/system_location?name={{pexip_location_name}}",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"system_location"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{pexip_location_name}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-default-location",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3621f319-1415-4f93-8077-401f79dc66c8",
+						"exec": [
+							"var defaultLocId = pm.environment.get(\"default-loc_id\");",
+							"if (defaultLocId===0){",
+							" var locationid = Math.floor(Math.random(1000)*100); ",
+							" console.log(`new locationid: ${locationid}`)",
+							" var system_location = {",
+							"    \"name\": pm.environment.get(\"pexip_location_name\"),",
+							"    \"bdpm_pin_checks_enabled\": \"OFF\",",
+							"    \"bdpm_scan_quarantine_enabled\": \"OFF\",",
+							"    \"description\": \"default system location that will be used for default inventory\",",
+							"    \"id\": locationid,",
+							"    \"dns_servers\" : [{\"address\" : \"8.8.8.8\"}],",
+							"    \"local_mssip_domain\": \"\",",
+							"    \"ntp_servers\" : [{\"address\" : \"0.pexip.pool.ntp.org\"}, {\"address\" : \"3.pexip.pool.ntp.org\"}]",
+							" };",
+							" pm.environment.set(\"system_location\", JSON.stringify(system_location));",
+							" pm.environment.set(\"default-loc_id\", locationid);",
+							"}",
+							"else{",
+							"    console.log(`existing default_locationid: ${defaultLocId}`)",
+							"}",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d686de8b-b7c0-4449-a9aa-bfcabc681a12",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202 || responseCode.code === 400;",
+							"",
+							"pm.environment.set(\"pexip_systemlocation_response\", responseBody);",
+							"console.log(`loaded response from request ${responseBody}`);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{system_location}}"
+				},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/system_location/",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"system_location",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_conf_node_config",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "eaa9e62b-bd51-4878-b7d5-1d5ed19f7024",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"pm.environment.set(\"pexip_confnode_config\", responseBody);",
+							"console.log(`loaded response from request ${responseBody}`);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "21af5034-5ada-482f-9c01-55faf1ea40f5",
+						"exec": [
+							"console.log(`default_locationid: ${pm.environment.get(\"default-loc_id\")}` )",
+							"var systemLocation = \"/api/admin/configuration/v1/system_location/\"+pm.environment.get(\"default-loc_id\") + \"/\";",
+							"var configPayload = {",
+							"  \"name\": pm.environment.get(\"pexip_confnode_name\"),",
+							"  \"hostname\": pm.environment.get(\"pexip_confnode_hostname\"),",
+							"  \"domain\": pm.environment.get(\"pexip_domain\"),",
+							"  \"address\": pm.environment.get(\"pexip_confnode_address\"),",
+							"  \"netmask\": pm.environment.get(\"pexip_confnode_netmask\"),",
+							"  \"gateway\": pm.environment.get(\"pexip_confnode_gateway\"),",
+							"  \"password\": pm.environment.get(\"pexip_mgr_password\"),",
+							"  \"node_type\": pm.environment.get(\"pexip_node_type\"),",
+							"  \"system_location\": systemLocation,",
+							"  \"static_nat_address\" : pm.environment.get(\"pexip_confnode_static_nat_address\"),",
+							"  \"deployment_type\": \"MANUAL-PROVISION-ONLY\"",
+							"};",
+							"",
+							"console.log(`${JSON.stringify(configPayload)}`);",
+							"",
+							"postman.setEnvironmentVariable(\"configPayload\", JSON.stringify(configPayload));",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{configPayload}}"
+				},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/worker_vm/",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"worker_vm",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload_conf_node_config",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0c89c75d-63e9-487f-b70a-5c2a61a452ea",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c563e396-0807-4b38-b024-df4ebd3f31fc",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{pexip_confnode_config}}\n"
+				},
+				"url": {
+					"raw": "https://{{pexip_confnode_address}}:8443/configuration/bootstrap",
+					"protocol": "https",
+					"host": [
+						"{{pexip_confnode_address}}"
+					],
+					"port": "8443",
+					"path": [
+						"configuration",
+						"bootstrap"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{pexip_mgr_password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{pexip_mgr_username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "1759e2a3-0c20-4cb3-a781-a3816fe6a38f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c6975f6c-02fc-4fdf-859c-649359e2049b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

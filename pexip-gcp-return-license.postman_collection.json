@@ -1,0 +1,160 @@
+{
+	"info": {
+		"_postman_id": "45751b69-6919-46ee-951c-4744483b34f5",
+		"name": "pexip-gcp-return-license",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "iterate_licenses",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cd31ff3c-3d42-4ce0-a3b3-07e7703983af",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful GET request\"] = responseCode.code === 200",
+							"if (pm.response.json().meta.total_count > 0){",
+							" pm.response.json().objects.forEach(function(post){",
+							"  console.log(`pexip_license_fulfillment_id: ${post.fulfillment_id}`)",
+							"  pm.environment.set(\"pexip_license_fulfillment_id\", post.fulfillment_id);",
+							"})",
+							"}",
+							"else{",
+							" console.log(`No license found`)",
+							" pm.environment.set(\"license_fulfillment_id\", 0);",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/licence/",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"licence",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "return_license_online",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a4d518d6-1cca-4f31-a257-a0c13ee24528",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "3a61317d-15e0-4120-9f8b-23b9fcfcc3a7",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/licence/{{pexip_license_fulfillment_id}}/",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"licence",
+						"{{pexip_license_fulfillment_id}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check_license",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/licence/",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"licence",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{pexip_mgr_password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{pexip_mgr_username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0cdeb340-f4c9-45e0-bab6-902deb2216e1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6890e1a1-ca32-4ba9-8b97-bedf5e11ace4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

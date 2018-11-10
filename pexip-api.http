@@ -1,0 +1,7 @@
+https://{{host}}/api/admin/configuration/v1/system_location/
+Authorization: Basic {{username}} {{password}}
+Content-Type: application/json
+
+
+
+###

@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "fbecdac4-965b-45e5-8d31-653a7b6f4c66",
+		"name": "pexip-gcp-license",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "add_pexip_license",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "96130864-7e7f-4b4a-ad14-5feda34cdb5e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"entitlement_id\" : \"{{entitlement_id}}\"\n}\n"
+				},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/licence/",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"licence",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check_license",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/licence/",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"licence",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{pexip_mgr_password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{pexip_mgr_username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "d0f2b548-90c2-4609-b8a5-16b46533c6f6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e38b0c88-6815-483f-bafa-ad8146382507",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

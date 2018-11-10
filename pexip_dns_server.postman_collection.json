@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "0f58b7cf-f909-496b-ade0-2584e62a27d2",
+		"name": "pexip_dns_server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "pexip_create_dns_server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e09660fb-3cab-4fbe-a20c-b575ae8ae5be",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202 || responseCode.code === 400;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"address\" : \"{{dns_server_address}}\",\n        \"description\": \"{{dns_descripton}}\"\n}\n"
+				},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/dns_server/",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"dns_server",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "retrieve_dns_server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d42424ca-b21a-41ff-b979-69bb3693d6ed",
+						"exec": [
+							"tests[\"Successful GET request\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/dns_server/",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"dns_server",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{pexip_mgr_password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{pexip_mgr_username}}",
+				"type": "string"
+			}
+		]
+	}
+}

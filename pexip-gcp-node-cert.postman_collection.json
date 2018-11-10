@@ -1,0 +1,103 @@
+{
+	"info": {
+		"_postman_id": "7a66bd13-8f5d-404a-8998-668b015d7d02",
+		"name": "pexip-gcp-node-cert",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "pexip-patch-cert",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6f478328-7cf5-45a3-9da5-321cc90a130b",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "bd8a9def-465a-4c63-958b-b1909a11551a",
+						"type": "text/javascript",
+						"exec": [
+							"var tls_certificate = {",
+							"    \"tls_certificate\": pm.environment.get(\"pexip_tls_url\")",
+							" };",
+							" pm.environment.set(\"tls_certificate\", JSON.stringify(tls_certificate));"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{tls_certificate}}"
+				},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/worker_vm/{{pexip_current_node}}/",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"worker_vm",
+						"{{pexip_current_node}}",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{pexip_mgr_password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{pexip_mgr_username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "988d97ef-8be2-4e87-b94c-ff991128c31e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "abbc54cf-3fe2-4230-9717-e0723fca62c6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

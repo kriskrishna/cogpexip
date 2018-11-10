@@ -1,0 +1,95 @@
+{
+	"info": {
+		"_postman_id": "d3fd89da-b4e0-4dd3-80d8-ce43860e9806",
+		"name": "pexip-gcp-cert",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "pexip-upload-cert",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d0e899cc-28a7-4bb7-930e-8f1219e51849",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "certificate",
+							"type": "file",
+							"src": "wildcard.set.iconf.net.pem"
+						},
+						{
+							"key": "private_key",
+							"value": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAnn7hlhJFdcruE/aW7hzA0DSxpDVghZh3Rzs49He6u8GH+9gl\nNyQw72pWrIqgNAOEziF876Tx26MaWUqKhq1FP4gb48NNwAqTwArMXap5eEEo1zln\nRuajEZoA3V9fKzfne5Msb9LTFruhNCd7odzn/sw7MeFE0pTDsJb13e0P8eO/vkkm\ngX0tpNzvSUlu7Ztamj+mRNM1X8M78AgrANfF0013/22rNZmBIC3sFE2RvtCQBUzR\nb619N6u3o/EmA61NwlK2E1O29gKnBzGCNT6ZtiG315A4C/kbgydpAkGAx77+hOdc\n/ptdosJYDDeAd5/KfbY6J3wcqBu6Z3FWuAMmfwIDAQABAoIBAEFUcFzA5EOk5VRy\nOI0mae2IQs66N7JpgYTpatUNwvkgURJkahacAtW0ocxWCanW53dlw08uUIjlZnd2\nq7nOkvQYgNJ1jsdBNNycNtfG7HG+ffyUyzak24NmVMPqy1oPnYlIxTDEmEDPDyfl\nvGagHTpf6Whqf8lDC5Ru7SJQVFmyDgjN6bTUtk/Hfn1d8f3MtiMULGhtTOiPbu9j\ncitvKbg7fdqs85jgs4pfnEWZbbfy2VBwqYSuv5qGWLcq8N1/0Ewk7tI66Hgm8CSn\nwatxae5ajLah6lmyMiQfIfXXceCVFBNjLLJhtfmn1LInxNhEY1oBi0/8N9jgRdQH\nNZ40sykCgYEA0WHuCT0+kfR9rXBELx1+u59wR1+1XzZ2lK/StZzOBrakpAqWt9O3\nJ2k7Ol6HFRoCyYhVVIUgZO9UkU/59uD/hFRrYWGlJFNB+6SisxKN/YZptKimZxRr\nevHaFfVtQFeo9dXiHHW4F+7quizYfM2c6F55yPtX/4R2IX4TNTcYJ+cCgYEAwciT\neiaLk7DPU54xuZdsu7cXTdTG09Ew3060YoABaj50zy206ZNXKVvdmPp/sBgbUPlK\n2IUXMlwoIiExQxRwN+ZtOmKVBYf9vVLWPeIx8yu/i7oonTQ32ZrndUfFRsD630Bt\n5fIs3rmI7Y7Qflq7On+WTpij18wJuM61kkcS2akCgYAbxeaiGRqUl56YA903dq0Z\nzANDpGFVeM7v2AaWCm+VmmJqU/E7/vw7YQz3KBS46tNV0hyncmUinlBUWgxo/91E\nu0HnD+Gs2NJWw7bFE//7kfmxefFgmOfMzgnEgeJ092u0+CLe7Yp2uj0uZsZsf4WB\nmQ6EZzp77SESPjvkAiPVHwKBgDr8gA/FneUGBAYS+FXjBwEY2Woio6ckXTkMLxJw\nnn2lp07NPe1/oR+AzDJdxfJnVCFQ0PyZfpcgwEKrUeB2XzZU2NjV20DExXMUvQw3\nRzcbEQJKV0SK+ZkuctgbUayY34SHiyxcjFX7qfeN6l8b5TQIVEt2YSE2BZuQqGpv\nYgiJAoGBAKRWex7rXQhPtPsUF6sXKrBsUqCUsnv0ZA9A6lln5ykRigQPpQjvGjAL\nf9fsTQJyoEgsQalCgOJlNhZeOO7U56zrEFKgSFyeUD+rgmEpn6aronSV07+j1xZG\n68+A5W162eKUYPJH5XyRLgEEqebkbD6rUeCWsrwG1n5i2tN0T5Jh\n-----END RSA PRIVATE KEY-----",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/tls_certificate/",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"tls_certificate",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{pexip_mgr_password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{pexip_mgr_username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "df72af39-f825-4403-bc63-479f43013553",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "7a7c164e-a628-4944-a5df-6cc3a0b674f1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

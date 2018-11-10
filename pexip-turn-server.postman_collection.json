@@ -1,0 +1,137 @@
+{
+	"info": {
+		"_postman_id": "8725b83c-cd1d-4aff-a72d-9ea3c897b45b",
+		"name": "pexip-turn-server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "turn_server_setup",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "96130864-7e7f-4b4a-ad14-5feda34cdb5e",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0f41dffd-c42c-410b-b4ce-578534853040",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"address\" : \"{{turn_server_address}}\",\n        \"name\": \"{{pexip_turn_server}}\"\n}\n"
+				},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/turn_server/",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"turn_server",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "retrieve_turn_server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "71e8cd89-242a-4b4b-aea1-7715459bb7e8",
+						"exec": [
+							"tests[\"Successful GET request\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{pexip_mgr_url}}/api/admin/configuration/v1/turn_server/",
+					"host": [
+						"{{pexip_mgr_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"configuration",
+						"v1",
+						"turn_server",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{pexip_mgr_password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{pexip_mgr_username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "2cfee563-f9fb-4137-965a-b309c6c4c7f9",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "23a302f2-70a6-44ae-9ec8-38fffd672147",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

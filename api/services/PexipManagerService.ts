@@ -1,56 +1,63 @@
 import * as restify from "restify-clients";
-import * as queryString from "querystring";
 import {PexipInfo} from "../models/PexipInfo";
+import {PexipNodesInfoServiceClient} from "./PexipNodesInfoServiceClient";
 
 /**
  * @description Implements PexipMgr Service using restify client and get the Meeting info.
  * @export
  * @class PexipMgrService
  * @implements {PexipMgrService}
+ *
+ * //sslRootCAs.addFile("/Users/m_697556/workspace/cogpexip/api/pexip101.mc.iconf.net.pem");
+ //var https = require('https');
+ //https.globalAgent.options.ca=sslRootCAs;
  */
 export class PexipManagerService {
-    private serviceURL:String;
+    private serviceURL:string;
+    private svcClient : PexipNodesInfoServiceClient;
 
-    constructor(serviceURL:String) {
+    constructor(serviceURL:string, userName: string, pass : string) {
+        console.info("ServiceURL: " + serviceURL)
         this.serviceURL = serviceURL;
+        this.svcClient = new PexipNodesInfoServiceClient(serviceURL, userName, pass);
     }
 
-    /*** Gets the configuration properties from the cloud config server.
-     * @param {String} conferenceCode The conferenceCode String from the Request
-     * @param {Date} startTime The startTime Date from the current date
-     * @param {Date} endTime The endTime Date from the current date
-     */
-    public findNodeConfInfo(conferenceCode:String, startTime:Date, endTime:Date) {
-
-        let path = "/intercallrestapi/api/intercallMeetings/GetMeetings";
-        let queryStr = `startDate=${startTime.toISOString()}&endDate=${endTime.toISOString()}&passCode=${conferenceCode}`
-        let queryObj = queryString.parse(queryStr);
-        return this.getNodeConfInfo(path, queryObj);
-
+    public findSystemLocation() {
+        var path = "api/admin/configuration/v1/system_location/";
+        return this.svcClient.getInfoBasicAuth(path);
     }
 
-    /*** Gets the configuration properties from the cloud config server.
-     * @param {String} path The path String path for the Request
-     */
-    private getNodeConfInfo(path:String, query:any): Promise<Array<PexipInfo>> {
-
-        return new Promise<Array<PexipInfo>>((resolve, reject) => {
-            let client = restify.createJsonClient({
-                url: this.serviceURL,
-                query: query,
-                headers: {
-                    Accept: "application/json"
-                }
-            });
-            client.get(path,
-                (err:Object, _req:Object, _res:Object, obj:Array<PexipInfo>) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(obj);
-                    }
-                });
-        });
-
+    public findWorkerVM() {
+        var path = "api/admin/configuration/v1/worker_vm/";
+        return this.svcClient.getInfoBasicAuth(path);
     }
+
+
+    public findSysLocation() {
+        var path = "api/admin/configuration/v1/system_location/";
+        return this.svcClient.getInfoBasicAuth(path);
+    }
+
+
+    public findManagementVM() {
+        var path = "api/admin/configuration/v1/management_vm/";
+
+        return this.svcClient.getInfoBasicAuth(path);
+    }
+
+    public findTLSCerts() {
+        var path = "api/admin/configuration/v1/tls_certificate/";
+
+        return this.svcClient.getInfoBasicAuth(path);
+    }
+
+
+    public findLicenses() {
+        var path = "api/admin/configuration/v1/licence//";
+
+        return this.svcClient.getInfoBasicAuth(path);
+    }
+
+
+
 }

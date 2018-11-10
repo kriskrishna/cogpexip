@@ -1,5 +1,6 @@
-
+import * as queryString from "querystring";
 import restify = require('restify-clients');
+import {PexipInfo} from "../models/PexipInfo";
 
 //Interface to "parse" the information service token
 interface IToken {
@@ -21,7 +22,7 @@ class InfServiceToken {
     }
 
     /**
-     * Returns true if the token has not yet expire. 
+     * Returns true if the token has not yet expire.
      */
     get isValid() {
         let today = new Date();
@@ -44,9 +45,10 @@ export class PexipNodesInfoServiceClient {
     private username: string;
     private password: string;
     private currentToken: InfServiceToken | undefined;
+    //private https : any | undefined;
 
     /**
-     * Client constructor, should be called as few times as possible 
+     * Client constructor, should be called as few times as possible
      * (eg: with a singleton)
      * @param serviceURL Service address, without any entry point information
      * @param usr User allowed to get the client_credentiasl token
@@ -56,11 +58,12 @@ export class PexipNodesInfoServiceClient {
         this.serviceURL = serviceURL;
         this.username = usr;
         this.password = pwd;
+        //this.https = https;
     }
 
     /**
      * Returns a valid acces token from the cache (field).
-     * If the token is no longer valid it wil get a new one. 
+     * If the token is no longer valid it wil get a new one.
      */
     public getToken(): Promise<InfServiceToken> {
         return new Promise<InfServiceToken>((resolve, reject) => {
@@ -74,12 +77,12 @@ export class PexipNodesInfoServiceClient {
 
             //Prepare service call
             let client = restify.createJsonClient({
-                url: this.serviceURL
+                url: this.serviceURL,
             });
             //Set auth parameters
             client.basicAuth(this.username, this.password);
 
-            //Call the rest service 
+            //Call the rest service
             //(note grant_type needs to be part og the query string, Tried placing it in headers and body and it didn't work.)
             client.post('/oauth/token?grant_type=client_credentials',
                 (err: Object, _req: Object, _res: Object, obj: IToken) => {
@@ -99,34 +102,14 @@ export class PexipNodesInfoServiceClient {
     }
 
     /**
-     * Entry point to get bridge information (sp_vidyo_get_bridge_g1_0)
-     * @param cc Conference code / acces code used to get the bridge (Vydio) information
-     */
-    public getBridgeInfo(cc: string, maxRetries: number): Promise<Object> {
-        return this.getInfo('/bridgeinfo/v1/' + cc, maxRetries);
-    }
-
-    /**
-     * Entry point to get owner's information (sp_pxp_get_ownerinfo_g2_0)
-     * @param cc Conference code / acces code used to get the owner information
-     * @param softphoneType
-     */
-    public getOwnerInfo(cc: string, softphoneType: string, maxRetries: number): Promise<Object> {
-
-        return this.getInfo('/ownerinfo/v1/' + cc + "/" + softphoneType, maxRetries);
-
-    }
-
-
-    /**
      * Generic method to get objects out of the information service
      * @param path full path for the request  URL+Entrypoint+Parameters
      */
-    private getInfo(path: String, maxRetries: number): Promise<Object> {
+    public getInfo(path: String, maxRetries: number): Promise<Object> {
         //Before calling the service we need to get current token
         return this.getToken()
             .then(token => {
-                //Use current token to get the required information.                
+                //Use current token to get the required information.
                 let acc_tok = "Bearer " + token.value;
 
                 //Prepare the service call
@@ -142,13 +125,13 @@ export class PexipNodesInfoServiceClient {
                     client.get(path,
                         (err: Object, _req: Object, _res: Object, obj: Object) => {
                             if (err) {
-                                //if an error is found it will retry to get it. 
+                                //if an error is found it will retry to get it.
                                 if (maxRetries > 0) {
                                     console.log("Error getting information. Retrying operation:  "+ err)
                                     this.getInfo(path, maxRetries - 1)
                                     //just bubble up on error or success
-                                    .then(retVal => resolve(retVal))
-                                    .catch(retVal => reject(retVal));
+                                        .then(retVal => resolve(retVal))
+                                        .catch(retVal => reject(retVal));
                                 }
                                 else {
                                     reject(err);
@@ -166,4 +149,28 @@ export class PexipNodesInfoServiceClient {
                 return reason;
             });
     }
+
+    public getInfoBasicAuth(path: String): Promise<Object> {
+        return new Promise<PexipInfo>((resolve, reject) => {
+            let client = restify.createJsonClient({
+                url: this.serviceURL + path,
+                rejectUnauthorized: false,
+                headers: {
+                    Accept: "application/json"
+                }
+            });
+            client.basicAuth(this.username, this.password);
+            client.get("",
+                (err: Object, _req: Object, _res: Object, obj: PexipInfo) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(obj);
+                    }
+                });
+        });
+
+    }
+
+
 }
